@@ -25,8 +25,24 @@ class redditData(Exception):
         return reddit
 
     def testReq(self, reddit):
-        for submission in reddit.subreddit('litecoin').hot(limit=10):
-            print("Score: {}, ID: {}. URL:{}, Title: {}".format(submission.score,submission.id,submission.url,submission.title))
+
+        #Create a subreddit instance for a given subreddit
+        submission = reddit.subreddit('litecoin')
+
+        #Loop through all the hot submissions
+        for post in submission.hot(limit=1):
+            print("Score: {}, ID: {}. URL:{}, Title: {}".format(post.score,post.id,post.url,post.title))
+
+            #Expand all the comments
+            post.comments.replace_more(limit=None)
+            allComments = []
+
+            #For each post, iterate through all comments
+            for comment in post.comments.list():
+                allComments.append(comment.body)
+
+
+        print(len(allComments))
 
 if __name__ == '__main__':
     obj = redditData()
